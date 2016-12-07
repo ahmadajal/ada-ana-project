@@ -8,6 +8,7 @@ import java.io.FileWriter
 import java.io.BufferedWriter
 
 object Main {
+  val fields = List("lang", "sentiment")
   def readPart(fileName: String, index: Int, size: Int): Array[Char] = {
     val br = new BufferedReader(new FileReader(fileName))
     val arr = new Array[Char](size)
@@ -20,11 +21,19 @@ object Main {
     bw.close()
   }
   def filterFields(js: JValue): JValue = {
-    val fields = List("lang", "sentiment")
     val children = js.children
     // val retrievedFields = fields.map(f => JObject(children.map(c => (js \ "_source").filterField(x => x._1 == "lang"))))
-    val retrievedFields = children.map(c => JObject((js \ "_source").filterField(x => fields.contains(x._1))))
+    val retrievedFields = children.map(c => JObject((c \ "_source").filterField(x => fields.contains(x._1))))
     JArray(retrievedFields)
+  }
+  def filterFields(fileName: String): Unit = {
+    val js = parse(new java.io.File(fileName))
+    val newJs = filterFields(js)
+    val doc = render(newJs)
+    val str = pretty(doc)
+    val pw = new java.io.PrintWriter(s"__$fileName")
+    pw.println(str)
+    pw.close()
   }
   def main(args: Array[String]) {
     val res = parse(""" { "numbers" : [1, 2, 3, 4] } """)
