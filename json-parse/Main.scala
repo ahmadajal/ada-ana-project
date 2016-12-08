@@ -35,6 +35,13 @@ object Main {
     pw.println(str)
     pw.close()
   }
+  def getSchema(js: JValue): List[String] = {
+    val schema = scala.collection.mutable.Set[String]()
+    for(c <- js.children) {
+      schema ++= (c \ "_source").asInstanceOf[JObject].obj.map(_._1)
+    }
+    schema.toList
+  }
   def main(args: Array[String]) {
     val res = parse(""" { "numbers" : [1, 2, 3, 4] } """)
     println(res)
