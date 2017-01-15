@@ -8,7 +8,7 @@ import java.io.FileWriter
 import java.io.BufferedWriter
 
 object Main {
-  val fields = List("lang", "sentiment")
+  val fields = List("lang", "sentiment", "source_location", "published", "main")
   def readPart(fileName: String, index: Int, size: Int): Array[Char] = {
     val br = new BufferedReader(new FileReader(fileName))
     val arr = new Array[Char](size)
