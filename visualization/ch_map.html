@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script>L_PREFER_CANVAS = false; L_NO_TOUCH = false; L_DISABLE_3D = false;</script>
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.0/leaflet.markercluster-src.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.0/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.0/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://rawgit.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css" />
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <style> #swiss_map {
+                position : relative;
+                width : 600px;
+                height: 400px;
+                left: 0.0%;
+                top: 0.0%;
+                }
+            </style>
+            <style>
+.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+</head>
+<body>    
+            <div class="folium-map" id="swiss_map"></div>
+        
+</body>
+<script type="text/javascript" src="ch_map_files/swiss_cantons.js"></script>
+<script type="text/javascript" src="ch_map_files/viz_data.js"></script>
+<script>    
+    var SAD_VALUE = 0.0;
+    var HAPPY_VALUE = 1.0;
+    var INTERVAL = HAPPY_VALUE - SAD_VALUE;
+    var NEUTRAL_VALUE = SAD_VALUE + HAPPY_VALUE / 2.0;
+    
+
+            
+    var southWest = L.latLng(-90, -180);
+    var northEast = L.latLng(90, 180);
+    var bounds = L.latLngBounds(southWest, northEast);
+            
+
+    var swiss_map = L.map(
+                          'swiss_map',
+                          {center: [46.7,8.5],
+                          zoom: 7,
+                          maxBounds: bounds,
+                          layers: [],
+                          worldCopyJump: false,
+                          crs: L.CRS.EPSG3857
+                         });
+    
+
+
+    var tile_layer = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom: 18,
+            minZoom: 6,
+            continuousWorld: false,
+            noWrap: false,
+            attribution: 'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+            detectRetina: false
+            }
+        ).addTo(swiss_map);
+
+    var geoJson = L.geoJson(topojson.feature(
+        swiss_cantons_data,
+        swiss_cantons_data.objects.cantons)
+            ).addTo(swiss_map);
+    // get color depending on happiness
+    function getColor(d) {
+        return d > NEUTRAL_VALUE + INTERVAL / 4 ? '#008026' :
+               // d > 500  ? '#BD0026' :
+               //  d > 200  ? '#E31A1C' :
+               d > SAD_VALUE + INTERVAL / 4  ? '#FFEDA0' :
+                // d > 50   ? '#FD8D3C' :
+                // d > 20   ? '#FEB24C' :
+                // d > 10   ? '#FED976' :
+               '#800026';
+    }
+
+    var current_data = data_02_04
+
+    function findCantonIndex(canton) {
+        var canton_ids = current_data.canton
+        var size = 24
+        for(var i = 0; i < size; i++) {
+            if(canton_ids[i] == canton)
+                return i;
+        }
+        console.log(canton)
+        return -1;
+        // console.log(canton_ids)
+    }
+
+    function findCantonHappiness(idx) {
+        var canton_means = current_data.mean;
+        return canton_means[idx];
+    }
+
+    function getHappiness(canton) {
+      console.log(current_data)
+      var idx = findCantonIndex(canton);
+      return findCantonHappiness(idx);
+    }
+                
+    function my_style(feature) {
+        return {
+            weight: 2,
+            opacity: 1,
+            color: 'black',
+            dashArray: '3',
+            fillOpacity: 0.7,
+            fillColor: getColor(getHappiness(feature.id))
+        };
+    }
+    geoJson.setStyle(my_style);
+    // geoJson.setStyle(function(feature) {return feature.properties.style;});
+
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = ["Sad", "Neutral", "Happy"],
+            labels = [],
+            from, to;
+
+        for (var i = 0; i < grades.length; i++) {
+            // from = grades[i];
+            // to = grades[i + 1];
+
+            labels.push(
+                '<i style="background:' + getColor(SAD_VALUE + (INTERVAL / 2) * i) + '"></i> ' +
+                // from + (to ? '&ndash;' + to : '+'));
+                grades[i]);
+        }
+
+        div.innerHTML = labels.join('<br>');
+        return div;
+    };
+
+    legend.addTo(swiss_map);
+</script>
