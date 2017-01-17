@@ -39,7 +39,7 @@
 <body>  
     <div id="main_container">  
         <div class="folium-map" id="swiss_map"></div>
-        <input type="range" min="1" max="5" value="1" step="1" onchange="showRangeValue(this.value)" />
+        <input type="range" min="1" max="180" value="1" step="1" onchange="showRangeValue(this.value)" />
         <span id="range_value">1</span>
     </div>
 </body>
@@ -53,8 +53,9 @@
     var current_data = data_april[1];
     function showRangeValue(newValue)
     {
-        document.getElementById("range_value").innerHTML=newValue;
-        current_data = data_april[newValue];
+        var nv = newValue > 5 ? newValue % 5 + 1 : newValue
+        document.getElementById("range_value").innerHTML=nv;
+        current_data = data_april[nv];
         geoJson.setStyle(my_style);
     }
 
@@ -94,16 +95,34 @@
         swiss_cantons_data,
         swiss_cantons_data.objects.cantons)
             ).addTo(swiss_map);
+    function toColor(num) {
+        num >>>= 0;
+        var b = num & 0xFF,
+            g = (num & 0xFF00) >>> 8,
+            r = (num & 0xFF0000) >>> 16;
+        return "rgb(" + [r, g, b].join(",") + ")";
+    }
     // get color depending on happiness
     function getColor(d) {
-        return d > NEUTRAL_VALUE + INTERVAL / 4 ? '#008026' :
-               // d > 500  ? '#BD0026' :
-               //  d > 200  ? '#E31A1C' :
-               d > SAD_VALUE + INTERVAL / 4  ? '#FFEDA0' :
-                // d > 50   ? '#FD8D3C' :
-                // d > 20   ? '#FEB24C' :
-                // d > 10   ? '#FED976' :
-               '#800026';
+        // return d > NEUTRAL_VALUE + INTERVAL / 4 ? toColor(0x008000) : // 'rgb(0,255,255)' : //'#008026' :
+        //        // d > 500  ? '#BD0026' :
+        //        //  d > 200  ? '#E31A1C' :
+        //        d > SAD_VALUE + INTERVAL / 4  ? toColor(0xFFFF80) ://  toColor(0xFFEDA0) : // toColor((0x800026 + 0x008026) / 2) :
+        //         // d > 50   ? '#FD8D3C' :
+        //         // d > 20   ? '#FEB24C' :
+        //         // d > 10   ? '#FED976' :
+        //        toColor(0x800000); //'#800026';
+        // var sadColor = 0x800000 >> 8;
+        // var neutColor = 0x808000 >> 8;
+        // var hapColor = 0x008000 >> 8;
+        var norm = ((d - SAD_VALUE) / INTERVAL) * 2;
+        var col = 0;
+        if (norm > 1) {
+            col = ((((2 - norm) * 0x80) | 0) << 8) + 0x80;
+        } else {
+            col = (((norm * 0x80) | 0)) + 0x8000;
+        }
+        return toColor((col << 8) + 0x10);
     }
 
     function findCantonIndex(canton) {
