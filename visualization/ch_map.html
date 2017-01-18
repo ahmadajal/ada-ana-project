@@ -4,12 +4,15 @@
     <script>L_PREFER_CANVAS = false; L_NO_TOUCH = false; L_DISABLE_3D = false;</script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="ch_map_files/bootstrap.min.js"></script>
+    <script src="ch_map_files/moment.min.js"></script>
+    <script src="ch_map_files/bootstrap-datepicker.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.0/leaflet.markercluster-src.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.0/leaflet.markercluster.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="ch_map_files/bootstrap-datepicker3.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
@@ -39,8 +42,14 @@
 <body>  
     <div id="main_container">  
         <div class="folium-map" id="swiss_map"></div>
-        <input type="range" min="1" max="180" value="1" step="1" onchange="showRangeValue(this.value)" />
+        <input id="range_slider" type="range" min="1" max="180" value="1" step="1" onchange="showRangeValue(this.value)" disabled="true" />
         <span id="range_value">1</span>
+        <div id='datetimepicker1'> </div>
+        <script type="text/javascript">
+            
+        </script>
+    </div>
+</div>
     </div>
 </body>
 <script type="text/javascript" src="ch_map_files/swiss_cantons.js"></script>
@@ -51,16 +60,53 @@
     var INTERVAL = HAPPY_VALUE - SAD_VALUE;
     var NEUTRAL_VALUE = SAD_VALUE + HAPPY_VALUE / 2.0;
     var current_data = data_april[1];
+    var START_DATE = new Date(2016, 3, 1)
+    function addDays(date, days) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+    var currentDate = START_DATE
+
+    function updateSlider() {
+        var timeDiff = Math.abs(currentDate.getTime() - START_DATE.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+        document.getElementById("range_slider").value = diffDays + 1;
+        // alert(diffDays);
+    }
+
     function showRangeValue(newValue)
     {
-        var nv = newValue > 5 ? newValue % 5 + 1 : newValue
+        // console.log(newValue)
+        var newDate = addDays(START_DATE, newValue);
+        // console.log(newDate)
+        updateDate(newDate)
+        // var nv = newValue > 5 ? newValue % 5 + 1 : newValue
+        // document.getElementById("range_value").innerHTML=nv;
+        // current_data = data_april[nv];
+        // geoJson.setStyle(my_style);
+    }
+    function updateDate(newDate) 
+    {
+        currentDate = newDate
+        var nv = currentDate.getDate() > 5 ? currentDate.getDate() % 5 + 1 : currentDate.getDate();
+        // console.log('currentDate:' + currentDate)
         document.getElementById("range_value").innerHTML=nv;
         current_data = data_april[nv];
         geoJson.setStyle(my_style);
+        $(datePickerName).datepicker('update', currentDate
+        );
+        updateSlider();
     }
+    var datePickerName = '#datetimepicker1'
+    var datePicker = $(datePickerName).datepicker('update', currentDate
+    );
 
-    
-
+    datePicker.on('changeDate', function (ev) {
+        if(ev.date.getTime() != currentDate.getTime()) {
+            updateDate(ev.date);
+        }
+    });
             
     var southWest = L.latLng(-90, -180);
     var northEast = L.latLng(90, 180);
@@ -116,13 +162,22 @@
         // var neutColor = 0x808000 >> 8;
         // var hapColor = 0x008000 >> 8;
         var norm = ((d - SAD_VALUE) / INTERVAL) * 2;
-        var col = 0;
+        var r = 0,
+            g = 0,
+            b = 0;
         if (norm > 1) {
-            col = ((((2 - norm) * 0x80) | 0) << 8) + 0x80;
+            // col = ((((2 - norm) * 0x80) | 0) << 8) + 0x80;
+            r = ((2 - norm) * 0x80) | 0;
+            g = 0x80;
+            b = 0;
         } else {
-            col = (((norm * 0x80) | 0)) + 0x8000;
+            // col = (((norm * 0x80) | 0)) + 0x8000;
+            r = 0x80;
+            g = (norm * 0x80) | 0;
+            b = 0;
         }
-        return toColor((col << 8) + 0x10);
+        var col = (r << 16) + (g << 8) + b;
+        return toColor(col);
     }
 
     function findCantonIndex(canton) {
@@ -132,7 +187,7 @@
             if(canton_ids[i] == canton)
                 return i;
         }
-        console.log(canton)
+        // console.log(canton)
         return -1;
         // console.log(canton_ids)
     }
@@ -143,7 +198,7 @@
     }
 
     function getHappiness(canton) {
-      console.log(current_data)
+      // console.log(current_data)
       var idx = findCantonIndex(canton);
       return findCantonHappiness(idx);
     }
