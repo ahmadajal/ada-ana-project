@@ -162,6 +162,7 @@
         // var neutColor = 0x808000 >> 8;
         // var hapColor = 0x008000 >> 8;
         var norm = ((d - SAD_VALUE) / INTERVAL) * 2;
+        norm = ((norm * 5) | 0) / 5.0;
         var r = 0,
             g = 0,
             b = 0;
@@ -221,7 +222,7 @@
     legend.onAdd = function (map) {
 
         var div = L.DomUtil.create('div', 'info legend'),
-            grades = ["Sad", "Neutral", "Happy"],
+            grades = ["Too Sad", "Sad", "Neutral", "Happy", "Very Happy"],
             labels = [],
             from, to;
 
@@ -230,7 +231,7 @@
             // to = grades[i + 1];
 
             labels.push(
-                '<i style="background:' + getColor(SAD_VALUE + (INTERVAL / 2) * i) + '"></i> ' +
+                '<i style="background:' + getColor(SAD_VALUE + (INTERVAL / 4) * i) + '"></i> ' +
                 // from + (to ? '&ndash;' + to : '+'));
                 grades[i]);
         }
