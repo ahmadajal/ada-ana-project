@@ -43,7 +43,7 @@ object Main {
     schema.toList
   }
   def main(args: Array[String]) {
-    val res = parse(""" { "numbers" : [1, 2, 3, 4] } """)
-    println(res)
+    // val res = parse(""" { "numbers" : [1, 2, 3, 4] } """)
+    // println(res)
   }
 }
