@@ -140,9 +140,78 @@
             }
         ).addTo(swiss_map);
 
+        // control that shows state info on hover
+    var info = L.control();
+
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info');
+        this.update();
+        return this._div;
+    };
+
+    info.update = function (feature) {
+        var content = '<h4>Canton Information</h4>';
+        if(feature) {
+            
+            content += '<b>' + feature.properties.name + '</b><br /> <br />'
+            var idx = findCantonIndex(feature.id)
+            if(idx != -1) {
+              // console.log(feature.id)
+              // console.log(idx)
+              // console.log(current_data.main_mean[idx])
+              content += '<i> # of Tweets </i>: ' + current_data.count[idx] + '<br />';
+              content += '<i> Sentiment Mean </i>: ' + current_data.main_mean[idx] + '<br />';
+
+            }
+        } else {
+            content += 'Hover over a canton';
+        }
+        this._div.innerHTML = content;
+    };
+
+    info.addTo(swiss_map);
+
+    function highlightFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 3,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.9
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+
+        info.update(layer.feature);
+    }
+
+    var geojson;
+
+    function resetHighlight(e) {
+        geoJson.setStyle(my_style);
+        // info.update();
+    }
+
+    function zoomToFeature(e) {
+        swiss_map.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+        });
+        // console.log(feature)
+    }
+
     var geoJson = L.geoJson(topojson.feature(
         swiss_cantons_data,
-        swiss_cantons_data.objects.cantons)
+        swiss_cantons_data.objects.cantons), {
+        onEachFeature: onEachFeature}
             ).addTo(swiss_map);
     function toColor(num) {
         num >>>= 0;
@@ -200,7 +269,7 @@
     function findCantonHappiness(idx) {
         var canton_means = current_data.main_mean;
         var canton_pv = current_data.main_pv;
-        if(canton_pv[idx] > 0.05) {
+        if(idx == -1 || canton_pv[idx] > 0.05) {
             return UNDEFINED_VALUE;
         }
         return canton_means[idx];
