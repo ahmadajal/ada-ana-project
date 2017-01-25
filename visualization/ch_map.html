@@ -91,7 +91,8 @@
     function updateDate(newDate) 
     {
         currentDate = newDate
-        var nv = currentDate.getDate() > 5 ? currentDate.getDate() % 5 + 1 : currentDate.getDate();
+        // var nv = currentDate.getDate() > 5 ? currentDate.getDate() % 5 + 1 : currentDate.getDate();
+        var nv = currentDate.getDate();
         // console.log('currentDate:' + currentDate)
         document.getElementById("range_value").innerHTML=nv;
         current_data = data_april[nv];
