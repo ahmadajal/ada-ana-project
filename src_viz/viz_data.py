@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
+import os 
 
 def day_preprocess(day,data_day):
     data_single_day = data_day.get_group(day)
@@ -45,14 +46,15 @@ def sentiment_value(name):
 def main():
     # reading files
     
-    file_name_e = "data/output_tweets/sentiment_scored_english_tweets.csv"
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_name_e = os.path.join(dir_path,"../data/output_tweets/sentiment_scored_english_tweets.csv")
     print("Reading " + file_name_e + "\n");
     data_e = pd.read_csv(file_name_e)
     del data_e['Unnamed: 0']
     print("Data shape : ")
     print(data_e.shape)
 
-    file_name_g = "data/output_tweets/sentiment_scored_german_tweets.csv"
+    file_name_g = os.path.join(dir_path,"../data/output_tweets/sentiment_scored_german_tweets.csv")
     print("Reading " + file_name_g + "\n");
     data_g = pd.read_csv(file_name_g)
     del data_g['Unnamed: 0']
@@ -132,13 +134,12 @@ def main():
     # concatenation
     data_sent_canton_ = pd.concat([data_sent_canton_mean, data_sent_canton_std, data_sent_canton_p_values, data_sent_canton_count, data_sent_canton_nb_lang], axis = 1, join = 'inner')
     data_sent_canton_ = data_sent_canton_.reset_index()
-    data_sent_canton_.to_json("viz-data/__harvest3r_twitter_data-04_0.json")
-
+    data_sent_canton_.to_json(os.path.join(dir_path,"../viz-data/__harvest3r_twitter_data-04_0.json"))
     
     print("Single day vizualisation \n")
 
     data_day = data_sent_canton.groupby(['day'])
-    prefix="viz-data/__harvest3r_twitter_data_"
+    prefix= os.path.join(dir_path,"../viz-data/__harvest3r_twitter_data_")
     postfix = "-04_0.json"
     all_data_april = []
 
