@@ -37,3 +37,11 @@ def processDays(days: IndexedSeq[Int], month: Int, id: Int): Unit = {
 // days.map(x => getUniqueLocations(x, "04"))
 // processDays(22 to 30, 4, 43)
 // processDays(15 to 31, 1, 1)
+
+/* How to run spark-shell
+spark-shell --driver-memory 16G --packages "org.json4s:json4s-native_2.10:3.2.10,org.json4s:json4s-jackson_2.10:3.2.10"
+Copy paste Main.scala (except the package name) into the shell.
+For preprocessing the data of march use the following command:
+Main.preprocess(3)
+A similar thing can be used for other months.
+*/
