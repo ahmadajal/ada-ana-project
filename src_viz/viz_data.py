@@ -67,7 +67,7 @@ def main():
     # reading locations
     
     print("Reading locations' mapping\n");
-    loc_to_canton = pd.read_csv('data/location_to_canton.csv')
+    loc_to_canton = pd.read_csv(os.path.join(dir_path,"..data/location_to_canton.csv"))
     del loc_to_canton['Unnamed: 0']
     loc_to_canton.columns = [['canton','source_location']]
     print(loc_to_canton.shape[0])
