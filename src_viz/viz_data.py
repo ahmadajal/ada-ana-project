@@ -43,7 +43,7 @@ def sentiment_value(name):
         return val    
 
 
-def month_preprocess(month,loc_to_canton):
+def month_preprocess(month,month_nb,loc_to_canton):
     
     # reading files
     data_e = pd.DataFrame()
@@ -137,7 +137,6 @@ def month_preprocess(month,loc_to_canton):
     data_sent_canton_ = pd.concat([data_sent_canton_mean, data_sent_canton_std, data_sent_canton_p_values, data_sent_canton_count, data_sent_canton_nb_lang], axis = 1, join = 'inner')
     data_sent_canton_ = data_sent_canton_.reset_index()
     
-    month_nb = data_sent_canton['day'][0].split('-')[1] 
     data_sent_canton_.to_json("/home/tounsi/viz-data/" + month + "/__harvest3r_twitter_data_" + month_nb + "_0.json")
     
     print("Single day vizualisation \n")
@@ -173,8 +172,9 @@ def main():
     print(not_represented_cantons.shape[0]/loc_to_canton.shape[0])
     
     months = ['jan','feb','march','april','may','june','july','aug','sep','oct']
-    for month in months:
-        month_preprocess(month,loc_to_canton)
+    month_nbs = ['01','02','03','04','05','06','07','08','09','10']
+    for i,month in enumerate(months):
+        month_preprocess(month,month_nbs[i],loc_to_canton)
         
 if __name__ == '__main__':
     main()
