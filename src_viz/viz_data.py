@@ -138,12 +138,12 @@ def month_preprocess(month,loc_to_canton):
     data_sent_canton_ = data_sent_canton_.reset_index()
     
     month_nb = data_sent_canton['day'][0].split('-')[1] 
-    data_sent_canton_.to_json("/home/tounsi/" + month + "/viz-data/__harvest3r_twitter_data_" + month_nb + "_0.json")
+    data_sent_canton_.to_json("/home/tounsi/viz-data/" + month + "/__harvest3r_twitter_data_" + month_nb + "_0.json")
     
     print("Single day vizualisation \n")
 
     data_day = data_sent_canton.groupby(['day'])
-    prefix= "/home/tounsi/" + month + "/viz-data/__harvest3r_twitter_data_"
+    prefix= "/home/tounsi/viz-data/" + month + "/__harvest3r_twitter_data_"
     postfix = "-" + month_nb + "_0.json"
     all_data_april = []
 
