@@ -76,17 +76,6 @@ def month_preprocess(month):
     data = pd.concat([data_e,data_g,data_f])
     print(data.shape)
 
-    # reading locations
-    
-    print("Reading locations' mapping\n");
-    loc_to_canton = pd.read_csv(os.path.join(dir_path,"../data/location_to_canton.csv"))
-    del loc_to_canton['Unnamed: 0']
-    loc_to_canton.columns = [['canton','source_location']]
-    print(loc_to_canton.shape[0])
-
-    print("Percentage of unrepresented cantons in the data :");
-    not_represented_cantons = loc_to_canton[loc_to_canton.source_location.isnull()]
-    print(not_represented_cantons.shape[0]/loc_to_canton.shape[0])
     
     # mapping
     
@@ -168,6 +157,19 @@ def month_preprocess(month):
         data_sd.to_json(prefix + day.split('-')[2] + postfix)
         
 def main():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    # reading locations
+    
+    print("Reading locations' mapping\n");
+    loc_to_canton = pd.read_csv(os.path.join(dir_path,"../data/location_to_canton.csv"))
+    del loc_to_canton['Unnamed: 0']
+    loc_to_canton.columns = [['canton','source_location']]
+    print(loc_to_canton.shape[0])
+
+    print("Percentage of unrepresented cantons in the data :");
+    not_represented_cantons = loc_to_canton[loc_to_canton.source_location.isnull()]
+    print(not_represented_cantons.shape[0]/loc_to_canton.shape[0])
+    
     months = ['jan','feb','march','april','may','june','july','aug','sep','oct']
     for month in months:
         month_preprocess(month)
