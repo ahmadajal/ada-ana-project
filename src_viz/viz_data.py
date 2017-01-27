@@ -43,7 +43,7 @@ def sentiment_value(name):
         return val    
 
 
-def month_preprocess(month):
+def month_preprocess(month,loc_to_canton):
     
     # reading files
     data_e = pd.DataFrame()
@@ -172,7 +172,7 @@ def main():
     
     months = ['jan','feb','march','april','may','june','july','aug','sep','oct']
     for month in months:
-        month_preprocess(month)
+        month_preprocess(month,loc_to_canton)
         
 if __name__ == '__main__':
     main()
