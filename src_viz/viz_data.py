@@ -147,14 +147,16 @@ def month_preprocess(month,loc_to_canton):
     postfix = "-" + month_nb + "_0.json"
     all_data_april = []
 
-    for i in np.arange(30):
+    for i in np.arange(31):
         if (i<9):
             day = '2016-'+ month_nb +'-0' + str(i+1)
         else : 
             day = '2016-'+ month_nb +'-' + str(i+1)
-        print("Pre-processing " + day + "\n");
-        data_sd = day_preprocess(day,data_day)
-        data_sd.to_json(prefix + day.split('-')[2] + postfix)
+        print("Pre-processing " + day + "\n")
+        
+        if day in data_day.groups.keys():
+            data_sd = day_preprocess(day,data_day)
+            data_sd.to_json(prefix + day.split('-')[2] + postfix)
         
 def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
