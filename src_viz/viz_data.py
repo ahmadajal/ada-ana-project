@@ -40,28 +40,40 @@ def sentiment_value(name):
             val = -1
         else :
             val = np.NaN
-        return val
+        return val    
 
 
-def main():
+def month_preprocess(month):
+    
     # reading files
-    
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    file_name_e = os.path.join(dir_path,"../data/output_tweets/sentiment_scored_english_tweets.csv")
-    print("Reading " + file_name_e + "\n");
-    data_e = pd.read_csv(file_name_e)
-    del data_e['Unnamed: 0']
-    print("Data shape : ")
-    print(data_e.shape)
+    data_e = pd.DataFrame()
+    file_name_e = "/home/tounsi/output_tweets/"+ month +"/sentiment_scored_english_tweets.csv"
+    if os.path.exists(file_name_e):
+        print("Reading " + file_name_e + "\n");
+        data_e = pd.read_csv(file_name_e)
+        del data_e['Unnamed: 0']
+        print("Data shape : ")
+        print(data_e.shape)
 
-    file_name_g = os.path.join(dir_path,"../data/output_tweets/sentiment_scored_german_tweets.csv")
-    print("Reading " + file_name_g + "\n");
-    data_g = pd.read_csv(file_name_g)
-    del data_g['Unnamed: 0']
-    print("Data shape : ")
-    print(data_g.shape)
+    data_g = pd.DataFrame()
+    file_name_g = "/home/tounsi/output_tweets/"+ month +"/sentiment_scored_german_tweets.csv"
+    if os.path.exists(file_name_g):   
+        print("Reading " + file_name_g + "\n");
+        data_g = pd.read_csv(file_name_g)
+        del data_g['Unnamed: 0']
+        print("Data shape : ")
+        print(data_g.shape)
+
+    data_f = pd.DataFrame()
+    file_name_f = "/home/tounsi/output_tweets/"+ month +"/sentiment_scored_french_tweets.csv"    
+    if os.path.exists(file_name_f):   
+        print("Reading " + file_name_f + "\n");
+        data_f = pd.read_csv(file_name_f)
+        del data_f['Unnamed: 0']
+        print("Data shape : ")
+        print(data_f.shape)
     
-    data = pd.concat([data_e,data_g])
+    data = pd.concat([data_e,data_g,data_f])
     print(data.shape)
 
     # reading locations
@@ -105,6 +117,7 @@ def main():
     # add english and german columns
     data_sent_canton['en'] = pd.Series(1*(data_sent_canton['lang']=='en'))
     data_sent_canton['de'] = pd.Series(1*(data_sent_canton['lang']=='de'))
+    data_sent_canton['fr'] = pd.Series(1*(data_sent_canton['lang']=='fr'))
     data_sent_canton.head()
 
     print("Aggregated data vizualisation \n")
@@ -128,29 +141,36 @@ def main():
     data_sent_canton_count = pd.DataFrame(data_sent_canton_gp.count()['sentiment'])
     data_sent_canton_count.columns = ['count']
     # languages
-    data_sent_canton_nb_lang = pd.DataFrame(data_sent_canton_gp.sum()[['en','de']])
-    data_sent_canton_nb_lang.columns = ['nb_en','nb_de']
+    data_sent_canton_nb_lang = pd.DataFrame(data_sent_canton_gp.sum()[['en','de','fr']])
+    data_sent_canton_nb_lang.columns = ['nb_en','nb_de','nb_fr']
 
     # concatenation
     data_sent_canton_ = pd.concat([data_sent_canton_mean, data_sent_canton_std, data_sent_canton_p_values, data_sent_canton_count, data_sent_canton_nb_lang], axis = 1, join = 'inner')
     data_sent_canton_ = data_sent_canton_.reset_index()
-    data_sent_canton_.to_json(os.path.join(dir_path,"../viz-data/__harvest3r_twitter_data-04_0.json"))
+    
+    month_nb = data_sent_canton['day'][0].split('-')[1] 
+    data_sent_canton_.to_json("/home/tounsi/" + month + "/viz-data/__harvest3r_twitter_data_" + month_nb + "_0.json")
     
     print("Single day vizualisation \n")
 
     data_day = data_sent_canton.groupby(['day'])
-    prefix= os.path.join(dir_path,"../viz-data/__harvest3r_twitter_data_")
-    postfix = "-04_0.json"
+    prefix= "/home/tounsi/" + month + "/viz-data/__harvest3r_twitter_data_"
+    postfix = "-" + month_nb + "_0.json"
     all_data_april = []
 
     for i in np.arange(30):
         if (i<9):
-            day = '2016-04-0' + str(i+1)
+            day = '2016-'+ month_nb +'-0' + str(i+1)
         else : 
-            day = '2016-04-' + str(i+1)
+            day = '2016-'+ month_nb +'-' + str(i+1)
         print("Pre-processing " + day + "\n");
         data_sd = day_preprocess(day,data_day)
         data_sd.to_json(prefix + day.split('-')[2] + postfix)
+        
+def main():
+    months = ['jan','feb','march','april','may','june','july','aug','sep','oct']
+    for month in months:
+        month_preprocess(month)
         
 if __name__ == '__main__':
     main()
