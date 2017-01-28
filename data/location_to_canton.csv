@@ -1,123 +1,213 @@
 ,ID,Location
-0,ZH,Horgen
-1,ZH,Dielsdorf
-2,ZH,Pfäffikon
-3,ZH,Meilen
-4,ZH,Andelfingen
-5,ZH,Affoltern am Albis
-6,ZH,Zuerich
-7,ZH,Zurigo
-8,ZH,Uster
-9,ZH,Winterthur
-10,ZH,Zurich
-11,ZH,Zürich
-12,ZH,Hinwil
-13,ZH,Bülach
-14,BE,Frutigen
-15,BE,Langnau
-16,BE,Biel/Bienne
-17,BE,Interlaken
-18,BE,Thun
-19,BE,Biel
-20,BE,Berna
-21,BE,Bern
-22,BE,Lauterbrunnen
-23,BE,Bienne
-24,BE,Wengen
-25,BE,Saanen
-26,BE,Wangen an der Aare
-27,LU,Schenkon
-28,LU,Hochdorf
-29,LU,Sursee
-30,LU,Lucerna
-31,LU,Lucerne
-32,LU,Luzern
-33,LU,Willisau
-34,LU,Schüpfheim
-35,UR,Flüelen
-36,UR,Altdorf
-37,SZ,Schwiz
-38,SZ,Küssnacht
-39,SZ,Gersau
-40,SZ,Arth
-41,SZ,Schwyz
-42,SZ,Einsiedeln
-43,OW,Sarnen
-44,NW,Stans
-45,NW,Ennetbürgen
-46,GL,Glarus
-47,GL,
-48,ZG,
-49,FR,Tafers
-50,FR,Bulle
-51,FR,Marly
-52,FR,Fribourg
-53,SO,Olten
-54,SO,Solothurn
-55,BS,Basel
-56,BS,Bâle
-57,BS,Basilea
-58,BL,Sissach
-59,BL,Laufen
-60,BL,Liestal
-61,BL,Waldenburg
-62,BL,Arlesheim
-63,SH,Schleitheim
-64,SH,Schaffhausen
-65,AR,Herisau
-66,AI,Appenzell
-67,SG,Schmerikon
-68,SG,Buchs
-69,SG,Sankt Gallen
-70,SG,St. Gallen
-71,SG,Amden
-72,GR,Scuol
-73,GR,Poschiavo
-74,GR,Chur
-75,GR,Samedan
-76,AG,Brugg
-77,AG,Zofingen
-78,AG,Muri
-79,AG,Suhr
-80,AG,Wittnau
-81,AG,Aarau
-82,AG,Baden
-83,AG,Lenzburg
-84,AG,Laufenburg
-85,AG,Rheinfelden
-86,AG,Bremgarten
-87,AG,Bad Zurzach
-88,TG,Arbon
-89,TG,Kreuzlingen
-90,TG,Frauenfeld
-91,TG,Weinfelden
-92,TG,Romanshorn
-93,TG,Steckborn
-94,TI,Acquarossa
-95,TI,Bellinzona
-96,TI,Lugano
-97,VD,Losanna
-98,VD,Payerne
-99,VD,Renens
-100,VD,La Sarraz
-101,VD,Aigle
-102,VD,Lausanne
-103,VD,Apples
-104,VS,Visp
-105,VS,Evolène
-106,VS,Saint-Maurice
-107,VS,Leuk
-108,VS,Zermatt
-109,VS,Monthey
-110,VS,Brig
-111,VS,Conthey
-112,NE,Neuchatel
-113,NE,Neuchâtel
-114,NE,Le Locle
-115,GE,Ginevra
-116,GE,Genf
-117,GE,Geneve
-118,GE,Genève
-119,GE,Geneva
-120,JU,Delémont
-121,JU,Porrentruy
+0,ZH,CH 8545 Rickenbach Sulz
+1,ZH,"Ruschlikon, CH"
+2,ZH,"CH-8700- Kusnacht, Switzerland"
+3,ZH,"hombrechtikon, switzerland"
+4,ZH,"Basel, Brugg/Windisch (CH)"
+5,ZH,"CH-8142 Uitikon, Switzerland"
+6,ZH,"Herrliberg, CH"
+7,ZH,"finance academia, switzerland"
+8,ZH,"the hive, switzerland"
+9,ZH,"VM, CH"
+10,ZH,"CH-Horgen, Schweiz"
+11,ZH,"Zuerich, CH"
+12,ZH,"Winterthur, CH"
+13,ZH,"CH-8952 Schlieren, Switzerland"
+14,ZH,Horgen
+15,ZH,Dielsdorf
+16,ZH,Pfäffikon
+17,ZH,Meilen
+18,ZH,Andelfingen
+19,ZH,Affoltern am Albis
+20,ZH,Zuerich
+21,ZH,Zurigo
+22,ZH,Uster
+23,ZH,Winterthur
+24,ZH,Zurich
+25,ZH,Zürich
+26,ZH,Hinwil
+27,ZH,Bülach
+28,BE,"langenthal, switzerland"
+29,BE,"Thun, CH"
+30,BE,"biel/bienne, switzerland"
+31,BE,"Steffisburg, switzerland"
+32,BE,Staatsstrasse 3 switzerland
+33,BE,"Corgémont, CH"
+34,BE,Frutigen
+35,BE,Langnau
+36,BE,Biel/Bienne
+37,BE,Interlaken
+38,BE,Thun
+39,BE,Biel
+40,BE,Berna
+41,BE,Bern
+42,BE,Lauterbrunnen
+43,BE,Bienne
+44,BE,Wengen
+45,BE,Saanen
+46,BE,Wangen an der Aare
+47,LU,"lucern,switzerland"
+48,LU,Schenkon
+49,LU,Hochdorf
+50,LU,Sursee
+51,LU,Lucerna
+52,LU,Lucerne
+53,LU,Luzern
+54,LU,Willisau
+55,LU,Schüpfheim
+56,UR,Flüelen
+57,UR,Altdorf
+58,SZ,Schwiz
+59,SZ,Küssnacht
+60,SZ,Gersau
+61,SZ,Arth
+62,SZ,Schwyz
+63,SZ,Einsiedeln
+64,OW,Sarnen
+65,NW,Stans
+66,NW,Ennetbürgen
+67,GL,Glarus
+68,GL,
+69,ZG,"Baar, CH"
+70,ZG,
+71,FR,"Kerzers, CH"
+72,FR,"marly , suisse"
+73,FR,Tafers
+74,FR,Bulle
+75,FR,Marly
+76,FR,Fribourg
+77,SO,switzerland/olten
+78,SO,"CH, Scotland"
+79,SO,Deutschland | Österreich | CH
+80,SO,Olten
+81,SO,Solothurn
+82,BS,"basel region, switzerland"
+83,BS,Basel
+84,BS,Bâle
+85,BS,Basilea
+86,BL,"Binningen, CH"
+87,BL,Sissach
+88,BL,Laufen
+89,BL,Liestal
+90,BL,Waldenburg
+91,BL,Arlesheim
+92,SH,CH-8260 Stein am Rhein
+93,SH,CH-Trasadingen
+94,SH,Schleitheim
+95,SH,Schaffhausen
+96,AR,Herisau
+97,AI,Appenzell
+98,SG,"füstenland, schweiz"
+99,SG,St. Gallen-CH
+100,SG,"St.Gallen, CH"
+101,SG,CH-St.Gallen
+102,SG,"Eichberg, St. Gallen, CH"
+103,SG,"Gams, CH"
+104,SG,Schmerikon
+105,SG,Buchs
+106,SG,Sankt Gallen
+107,SG,St. Gallen
+108,SG,Amden
+109,GR,"Chur, CH"
+110,GR,"St. Moritz, switzerland"
+111,GR,"engadin, switzerland"
+112,GR,"Malans, CH"
+113,GR,Scuol
+114,GR,Poschiavo
+115,GR,Chur
+116,GR,Samedan
+117,AG,Windisch CH
+118,AG,Baden CH
+119,AG,"Mägenwil, CH"
+120,AG,"CH-8957 Spreitenbach, Switzerland"
+121,AG,Brugg
+122,AG,Zofingen
+123,AG,Muri
+124,AG,Suhr
+125,AG,Wittnau
+126,AG,Aarau
+127,AG,Baden
+128,AG,Lenzburg
+129,AG,Laufenburg
+130,AG,Rheinfelden
+131,AG,Bremgarten
+132,AG,Bad Zurzach
+133,TG,Frauenfeld CH
+134,TG,"Amriswil, CH"
+135,TG,"Arbon,CH"
+136,TG,Arbon
+137,TG,Kreuzlingen
+138,TG,Frauenfeld
+139,TG,Weinfelden
+140,TG,Romanshorn
+141,TG,Steckborn
+142,TI,"Giubiasco, CH"
+143,TI,"Lugano, switzerland"
+144,TI,"Bellinzona, CH"
+145,TI,"lugano, switzerland"
+146,TI,"Lugano (CH), Switzerland"
+147,TI,Acquarossa
+148,TI,Bellinzona
+149,TI,Lugano
+150,VD,"Pully, CH"
+151,VD,"yverdon , suisse"
+152,VD,"Vufflens-le-Chateau, CH"
+153,VD,"Lausanne, switzerland"
+154,VD,CH ✈
+155,VD,"9, rue de la Morâche – CH 1260"
+156,VD,"lausanne,suisse"
+157,VD,lausanne - switzerland
+158,VD,"CH '16, VT '20"
+159,VD,"lausanne , suisse"
+160,VD,"Bex, switzerland"
+161,VD,"Lausanne,CH"
+162,VD,suisse(lausanne & geneve)
+163,VD,Lausanne - CH
+164,VD,"Payerne, Suisse/Schweiz/CH"
+165,VD,Losanna
+166,VD,Payerne
+167,VD,Renens
+168,VD,La Sarraz
+169,VD,Aigle
+170,VD,Lausanne
+171,VD,Apples
+172,VS,"bluche, switzerland"
+173,VS,sion switzerland
+174,VS,Saas-Fee CH
+175,VS,"Les Haudères, CH"
+176,VS,"suisse, sion"
+177,VS,CH-1874 Champéry
+178,VS,Visp
+179,VS,Evolène
+180,VS,Saint-Maurice
+181,VS,Leuk
+182,VS,Zermatt
+183,VS,Monthey
+184,VS,Brig
+185,VS,Conthey
+186,NE,"La Chaux-de-Fonds, switzerland"
+187,NE,Neuchatel
+188,NE,Neuchâtel
+189,NE,Le Locle
+190,GE,"geneva,switzerland"
+191,GE,"Geneve, suisse"
+192,GE,"Grand-Lancy, suisse"
+193,GE,"Geneve,suisse"
+194,GE,"genf, schweiz"
+195,GE,"Geneva, switzerland"
+196,GE,"1237 Avully, geneve, suisse"
+197,GE,"United Nations, Geneva, CH"
+198,GE,Ginevra
+199,GE,Genf
+200,GE,Geneve
+201,GE,Genève
+202,GE,Geneva
+203,JU,delsberg schweiz
+204,JU,Delémont
+205,JU,Porrentruy
+206,,"p,switzerland"
+207,,Zentralschweiz
+208,,switzerland/isvicre
+209,,@switzerland
+210,,"Lake Zuerich, CH"
+211,,"CH, D, A"
