@@ -24,8 +24,8 @@ def day_preprocess(day,data_day):
     data_single_day_count = pd.DataFrame(data_single_day_gp.count()['sentiment'])
     data_single_day_count.columns = ['count']
     # languages
-    data_single_day_nb_lang = pd.DataFrame(data_single_day_gp.sum()[['en','de']])
-    data_single_day_nb_lang.columns = ['nb_en','nb_de']
+    data_single_day_nb_lang = pd.DataFrame(data_single_day_gp.sum()[['en','de','fr']])
+    data_single_day_nb_lang.columns = ['nb_en','nb_de','nb_fr']
     # concatenation
     data_single_day = pd.concat([data_single_day_mean, data_single_day_std, data_single_day_p_values, data_single_day_count,data_single_day_nb_lang], axis = 1, join = 'inner')
     data_single_day = data_single_day.reset_index()
