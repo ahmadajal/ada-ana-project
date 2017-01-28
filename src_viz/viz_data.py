@@ -65,7 +65,7 @@ def month_preprocess(month,month_nb,loc_to_canton):
         print(data_g.shape)
 
     data_f = pd.DataFrame()
-    file_name_f = "/home/tounsi/output_tweets/"+ month +"/sentiment_scored_french_tweets.csv"    
+    file_name_f = "/home/tounsi/output_tweets/"+ month +"/sentiment_scored_fench_tweets.csv"    
     if os.path.exists(file_name_f):   
         print("Reading " + file_name_f + "\n");
         data_f = pd.read_csv(file_name_f)
