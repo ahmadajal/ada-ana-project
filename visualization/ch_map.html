@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="ch_map_files/bootstrap-datepicker3.css" />
+    <link rel="stylesheet" href="ch_map_files/keen-dashboards.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
@@ -21,12 +22,12 @@
     <link rel="stylesheet" href="https://rawgit.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css" />
     <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
     <style>
-    #main_container { width: 600px; }
+    /*#main_container { width: 600px; }*/
     #map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
     
             <style> #swiss_map {
                 position : relative;
-                width : 600px;
+                /*width : 600px;*/
                 height: 400px;
                 left: 0.0%;
                 top: 0.0%;
@@ -39,21 +40,146 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 </head>
-<body>  
-    <div id="main_container">  
-        <div class="folium-map" id="swiss_map"></div>
+<body  class="application">  
+
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="./">Swiss Happiness!</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Cell Title
+          </div>
+          <div class="chart-stage">
+            <div id="grid-1-1">
+              <!-- <img data-src="holder.js/100%x240/white/text:#grid-1-1"> -->
+              <div id="main_container">  
+                <div class="folium-map" id="swiss_map"></div>
         <input id="range_slider" type="range" min="1" max="180" value="1" step="1" onchange="showRangeValue(this.value)" disabled="true" />
         <span id="range_value">1</span>
-        <div id='datetimepicker1'> </div>
-        <script type="text/javascript">
-        </script>
-        <span class="button-checkbox">
-        <button type="button" class="btn btn-default" data-color="primary"><i class="state-icon glyphicon glyphicon-unchecked"></i>&nbsp;P-Value</button>
-        <input type="checkbox" class="hidden" checked="">
-        </span>
     </div>
-</div>
+            </div>
+          </div>
+<!--           <div class="chart-notes">
+            Notes about this chart
+          </div> -->
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Filtering
+          </div>
+          <div class="chart-stage">
+<span class="button-checkbox">
+<button type="button" class="btn btn-default" data-color="primary"><i class="state-icon glyphicon glyphicon-unchecked"></i>&nbsp;P-Value</button>
+<input type="checkbox" class="hidden" checked="">
+</span>
+          </div>
+<!--           <div class="chart-notes">
+            Notes about this chart
+          </div> -->
+        </div>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col-sm-6 col-md-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Choose Date
+          </div>
+          <div class="chart-stage">
+                  <div id='datetimepicker1'> </div>
+          </div>
+<!--           <div class="chart-notes">
+            Notes about this chart
+          </div> -->
+        </div>
+      </div>
+<!--       <div class="col-sm-6 col-md-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Cell Title
+          </div>
+          <div class="chart-stage">
+            <img data-src="holder.js/100%x120/white">
+          </div>
+          <div class="chart-notes">
+            Notes about this chart
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Cell Title
+          </div>
+          <div class="chart-stage">
+            <img data-src="holder.js/100%x120/white">
+          </div>
+          <div class="chart-notes">
+            Notes about this chart
+          </div>
+        </div>
+      </div> -->
+<!-- end of three -->
+<!--       <div class="col-sm-6 col-md-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Cell Title
+          </div>
+          <div class="chart-stage">
+            <img data-src="holder.js/100%x120/white">
+          </div>
+          <div class="chart-notes">
+            Notes about this chart
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Cell Title
+          </div>
+          <div class="chart-stage">
+            <img data-src="holder.js/100%x120/white">
+          </div>
+          <div class="chart-notes">
+            Notes about this chart
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Cell Title
+          </div>
+          <div class="chart-stage">
+            <img data-src="holder.js/100%x120/white">
+          </div>
+          <div class="chart-notes">
+            Notes about this chart
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+
+    <hr>
+
+    <p class="small text-muted">Built with &#9829; by <a href="https://keen.io">Keen IO</a></p>
+
+  </div>
 </body>
 <script type="text/javascript" src="ch_map_files/swiss_cantons.js"></script>
 <script type="text/javascript" src="ch_map_files/viz_data.js"></script>
