@@ -63,7 +63,7 @@
     var current_data = data_all[4][1];
     var START_DATE = new Date(2016, 0, 1);
     var DEFAULT_DATE = new Date(2016, 3, 1);
-    var END_DATE = new Date(2016, 8, 24);
+    var END_DATE = new Date(2016, 10, 1);
     function addDays(date, days) {
         var result = new Date(date);
         result.setDate(result.getDate() + days);
@@ -110,7 +110,13 @@
 
     datePicker.on('changeDate', function (ev) {
         if(ev.date.getTime() != currentDate.getTime()) {
-            updateDate(ev.date);
+            if(ev.date.getTime() >= START_DATE.getTime() && ev.date.getTime() < END_DATE.getTime()) {
+              updateDate(ev.date);  
+            } else {
+              alert("\"" + ev.date.toDateString() + "\" is not in the range we support!")
+              $(datePickerName).datepicker('update', currentDate
+              );
+            }
         }
     });
             
