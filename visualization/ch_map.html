@@ -60,15 +60,16 @@
     var UNDEFINED_VALUE = -2;
     var INTERVAL = HAPPY_VALUE - SAD_VALUE;
     var NEUTRAL_VALUE = SAD_VALUE + HAPPY_VALUE / 2.0;
-    var data_april = data_all[4];
-    var current_data = data_april[1];
-    var START_DATE = new Date(2016, 3, 1)
+    var current_data = data_all[4][1];
+    var START_DATE = new Date(2016, 0, 1);
+    var DEFAULT_DATE = new Date(2016, 3, 1);
+    var END_DATE = new Date(2016, 8, 24);
     function addDays(date, days) {
         var result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
     }
-    var currentDate = START_DATE
+    var currentDate = DEFAULT_DATE
 
     function updateSlider() {
         var timeDiff = Math.abs(currentDate.getTime() - START_DATE.getTime());
@@ -91,11 +92,11 @@
     function updateDate(newDate) 
     {
         currentDate = newDate
-        // var nv = currentDate.getDate() > 5 ? currentDate.getDate() % 5 + 1 : currentDate.getDate();
-        var nv = currentDate.getDate();
-        // console.log('currentDate:' + currentDate)
-        document.getElementById("range_value").innerHTML=nv;
-        current_data = data_april[nv];
+        var day = currentDate.getDate();
+        var month = currentDate.getMonth() + 1;
+        console.log('currentDate month:' + month)
+        document.getElementById("range_value").innerHTML=day + "/" + month;
+        current_data = data_all[month][day];
         geoJson.setStyle(my_style);
         $(datePickerName).datepicker('update', currentDate
         );
@@ -104,6 +105,8 @@
     var datePickerName = '#datetimepicker1'
     var datePicker = $(datePickerName).datepicker('update', currentDate
     );
+    // $(datePickerName).datepicker('option', { minValue: START_DATE,
+    //                               maxDate: END_DATE });
 
     datePicker.on('changeDate', function (ev) {
         if(ev.date.getTime() != currentDate.getTime()) {
