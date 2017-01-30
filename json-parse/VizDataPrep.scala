@@ -5,11 +5,12 @@ import java.io._
 object VizDataPrep {
   def extractMonthDay(fileName: String): (Int, Int) = {
     val md = fileName.takeRight("XX-XX_0.json".length).take("XX-XX".length)
+    println(s"$fileName -- $md")
     (md.takeRight("XX".length).toInt, md.take("XX".length).toInt)
   }
   def getFiles(): Array[File] = {
   	val folder = new File("../viz-data")
-  	folder.listFiles().filter(_.getName.contains("harvest3r_twitter_data"))
+  	folder.listFiles().flatMap(f => f.listFiles().filter(_.getName.contains("harvest3r_twitter_data")))
   }
   def fileContents(files: Array[File]): Array[((Int, Int), String)] = {
   	files.map(fn => extractMonthDay(fn.getName) -> scala.io.Source.fromFile(fn).mkString)
