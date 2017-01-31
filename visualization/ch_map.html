@@ -92,7 +92,7 @@
 
 <span class="button-checkbox">
 <button type="button" class="btn btn-default" data-color="primary"><i class="state-icon glyphicon glyphicon-unchecked"></i>&nbsp;P-Value</button>
-<input type="checkbox" id="pvalue" class="hidden" checked="">
+<input type="checkbox" id="pvalue" class="hidden">
 </span>
 </center>
           </div>
@@ -139,9 +139,9 @@
     var UNDEFINED_VALUE = -2;
     var INTERVAL = HAPPY_VALUE - SAD_VALUE;
     var NEUTRAL_VALUE = SAD_VALUE + HAPPY_VALUE / 2.0;
-    var current_data = data_all[3][1];
+    var current_data = data_all[2][21];
     var START_DATE = new Date(2016, 0, 1);
-    var DEFAULT_DATE = new Date(2016, 2, 1);
+    var DEFAULT_DATE = new Date(2016, 1, 21);
     var END_DATE = new Date(2016, 10, 1);
     function addDays(date, days) {
         var result = new Date(date);
@@ -149,7 +149,7 @@
         return result;
     }
     var currentDate = DEFAULT_DATE;
-    var filterPValue = true;
+    var filterPValue = false;
     var isMonthly = false;
 
     function updateDate(newDate) 
