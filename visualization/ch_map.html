@@ -45,7 +45,7 @@
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="./">Swiss Happiness!</a>
+        <a class="navbar-brand" href="">Swiss Happiness!</a>
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-7">
         <div class="chart-wrapper">
 <!--           <div class="chart-title">
             Cell Title
@@ -73,35 +73,55 @@
           </div> -->
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Date
+          </div>
+          <div class="chart-stage">
+<center>
+<div id='datetimepicker1'> </div>
+</center>
+          </div>
+<!--           <div class="chart-notes">
+            Notes about this chart
+          </div> -->
+        </div>
+      </div>
+      <div class="col-sm-2">
         <div class="chart-wrapper">
           <div class="chart-title">
             Filtering
           </div>
           <div class="chart-stage">
+<center>
+
 <span class="button-checkbox">
 <button type="button" class="btn btn-default" data-color="primary"><i class="state-icon glyphicon glyphicon-unchecked"></i>&nbsp;P-Value</button>
 <input type="checkbox" class="hidden" checked="">
 </span>
+<br />
+</center>
           </div>
 <!--           <div class="chart-notes">
             Notes about this chart
           </div> -->
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-2">
         <div class="chart-wrapper">
           <div class="chart-title">
-            Choose Date
+            Detailed Info
           </div>
           <div class="chart-stage">
-<div id='datetimepicker1'> </div>
+<div id="info_legend"></div>
           </div>
 <!--           <div class="chart-notes">
             Notes about this chart
           </div> -->
         </div>
       </div>
+      
     </div>
 
     <div class="row">
@@ -176,8 +196,6 @@
 
 
     <hr>
-
-    <p class="small text-muted">Built with &#9829; by <a href="https://keen.io">Keen IO</a></p>
 
   </div>
 </body>
@@ -284,28 +302,33 @@
 
     info.onAdd = function (map) {
         this._div = L.DomUtil.create('div', 'info');
+        // this._div = $("#info_legend")
+        // this._div = document.getElementById("info_legend")
         this.update();
         return this._div;
     };
 
     info.update = function (feature) {
-        var content = '<h4>Canton Information</h4>';
+        var content1 = '<h4>Canton Information</h4>';
+        var content2 = "<br /><br /><br /><br />";
         if(feature) {
             
-            content += '<b>' + feature.properties.name + '</b><br /> <br />'
+            content1 += '<b>' + feature.properties.name + '</b>'// + '<br /> <br />'
             var idx = findCantonIndex(feature.id)
             if(idx != -1) {
               // console.log(feature.id)
               // console.log(idx)
               // console.log(current_data.main_mean[idx])
-              content += '<i> # of Tweets </i>: ' + current_data.count[idx] + '<br />';
-              content += '<i> Sentiment Mean </i>: ' + current_data.main_mean[idx] + '<br />';
-
+              content2 = '<i> # of Tweets </i>: ' + current_data.count[idx] + '<br />';
+              content2 += '<i> Sentiment Mean </i>: ' + Math.round(current_data.main_mean[idx] * 100) / 100 + '<br />';
+              content2 += '<i> Sentiment Var. </i>: ' + Math.round(current_data.main_std[idx] * 100) / 100 + '<br />';
+              content2 += '<i> P-Value </i>: ' + Math.round(current_data.main_pv[idx] * 100) / 100 + '<br />';
             }
         } else {
-            content += 'Hover over a canton';
+            content1 += 'Hover over a canton';
         }
-        this._div.innerHTML = content;
+        this._div.innerHTML = content1;
+        document.getElementById("info_legend").innerHTML=content2;
     };
 
     info.addTo(swiss_map);
