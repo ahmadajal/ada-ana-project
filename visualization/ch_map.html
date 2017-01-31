@@ -70,6 +70,10 @@
         <div class="chart-wrapper">
           <div class="chart-title">
             Date
+            <span class="button-checkbox" style="margin-left:60px">
+<button type="button" class="btn btn-default" data-color="warning"><i class="state-icon glyphicon glyphicon-unchecked"></i>&nbsp;Monthly</button>
+<input type="checkbox" id="monthly" class="hidden">
+</span>
           </div>
           <div class="chart-stage">
 <center>
@@ -88,9 +92,8 @@
 
 <span class="button-checkbox">
 <button type="button" class="btn btn-default" data-color="primary"><i class="state-icon glyphicon glyphicon-unchecked"></i>&nbsp;P-Value</button>
-<input type="checkbox" class="hidden" checked="">
+<input type="checkbox" id="pvalue" class="hidden" checked="">
 </span>
-<br />
 </center>
           </div>
         </div>
@@ -101,7 +104,7 @@
             Detailed Info
           </div>
           <div class="chart-stage">
-<div id="info_legend"></div>
+<div id="info_legend" style="height: 166px"></div>
           </div>
         </div>
       </div>
@@ -111,7 +114,7 @@
             Tweets Per Language
           </div>
           <div class="chart-stage">
-<div id="bar-chart" style="height: 200px;"></div>
+<div id="bar-chart" style="height: 180px;"></div>
           </div>
         </div>
       </div>
@@ -147,25 +150,21 @@
     }
     var currentDate = DEFAULT_DATE;
     var filterPValue = true;
+    var isMonthly = false;
 
     function updateDate(newDate) 
     {
         currentDate = newDate
-        var day = currentDate.getDate();
+        var day = isMonthly ? 0 : currentDate.getDate();
         var month = currentDate.getMonth() + 1;
-        // console.log('currentDate month:' + month)
-        // document.getElementById("range_value").innerHTML=day + "/" + month;
         current_data = data_all[month][day];
         geoJson.setStyle(my_style);
         $(datePickerName).datepicker('update', currentDate
         );
-        // updateSlider();
     }
     var datePickerName = '#datetimepicker1'
     var datePicker = $(datePickerName).datepicker('update', currentDate
     );
-    // $(datePickerName).datepicker('option', { minValue: START_DATE,
-    //                               maxDate: END_DATE });
 
     datePicker.on('changeDate', function (ev) {
         if(ev.date.getTime() != currentDate.getTime()) {
@@ -225,7 +224,7 @@
             content1 += '<b>' + feature.properties.name + '</b>'// + '<br /> <br />'
             var idx = findCantonIndex(feature.id)
             if(idx != -1) {
-              content2 = "<table class='table table-hover' style='margin-bottom: 4px;'>"
+              content2 = "<table class='table table-striped table-hover table-condensed' style='margin-bottom: 4px;'>"
               content2 += "<tr><td># of Tweets</td><td>" + current_data.count[idx] + "</td></tr>";
               content2 += "<tr><td>Sentiment Mean</td><td>" + Math.round(current_data.main_mean[idx] * 100) / 100 + "</td></tr>";
               content2 += "<tr><td>Sentiment Var.</td><td>" + Math.round(current_data.main_std[idx] * 100) / 100 + "</td></tr>";
@@ -243,9 +242,18 @@
                  ],
                  xkey: 'y',
                  ykeys: ['a'],
-                 labels: ['Visitors', 'Conversions']
+                 labels: ['Language', 'Tweets']
               });
-            }
+            } else {
+              Morris.Bar({
+                 element: 'bar-chart',
+                 data: [
+                 ],
+                 xkey: 'y',
+                 ykeys: ['a'],
+                 labels: ['Language', 'Tweets']
+              });
+            } 
         } else {
             content1 += 'Hover over a canton';
         }
@@ -417,13 +425,20 @@ $(function () {
         });
         $checkbox.on('change', function () {
             updateDisplay();
+            if($checkbox[0].id == 'pvalue') {
+                filterPValue = $checkbox.is(':checked');
+                updateDate(currentDate);     
+            } else if ($checkbox[0].id == 'monthly') {
+                isMonthly = $checkbox.is(':checked');
+                updateDate(currentDate); 
+            }
+            
+            
         });
 
         // Actions
         function updateDisplay() {
             var isChecked = $checkbox.is(':checked');
-            filterPValue = isChecked;
-            updateDate(currentDate); 
 
             // Set the button's state
             $button.data('state', (isChecked) ? "on" : "off");
