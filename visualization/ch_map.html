@@ -30,7 +30,7 @@
             <style> #swiss_map {
                 position : relative;
                 /*width : 600px;*/
-                height: 400px;
+                height: 520px;
                 left: 0.0%;
                 top: 0.0%;
                 }
@@ -129,7 +129,7 @@
             Tweets Per Language
           </div>
           <div class="chart-stage">
-<div id="bar-example" style="height: 200px;"></div>
+<div id="bar-chart" style="height: 200px;"></div>
           </div>
 <!--           <div class="chart-notes">
             Notes about this chart
@@ -326,7 +326,7 @@
 
     info.update = function (feature) {
         var content1 = '<h4>Canton Information</h4>';
-        var content2 = "<br /><br /><br /><br />";
+        var content2 = "<br /><br /><br /><br /> <br /> <br /><br />";
         if(feature) {
             
             content1 += '<b>' + feature.properties.name + '</b>'// + '<br /> <br />'
@@ -335,15 +335,17 @@
               // console.log(feature.id)
               // console.log(idx)
               // console.log(current_data.main_mean[idx])
-              content2 = '<i> # of Tweets </i>: ' + current_data.count[idx] + '<br />';
-              content2 += '<i> Sentiment Mean </i>: ' + Math.round(current_data.main_mean[idx] * 100) / 100 + '<br />';
-              content2 += '<i> Sentiment Var. </i>: ' + Math.round(current_data.main_std[idx] * 100) / 100 + '<br />';
-              content2 += '<i> P-Value </i>: ' + Math.round(current_data.main_pv[idx] * 100) / 100 + '<br />';
+              content2 = "<table class='table table-hover' style='margin-bottom: 4px;'>"
+              content2 += "<tr><td># of Tweets</td><td>" + current_data.count[idx] + "</td></tr>";
+              content2 += "<tr><td>Sentiment Mean</td><td>" + Math.round(current_data.main_mean[idx] * 100) / 100 + "</td></tr>";
+              content2 += "<tr><td>Sentiment Var.</td><td>" + Math.round(current_data.main_std[idx] * 100) / 100 + "</td></tr>";
+              content2 += "<tr><td>P-Value</td><td>" + Math.round(current_data.main_pv[idx] * 100) / 100 + "</td></tr>";
+              content2 += "</table>"
               var en = current_data.nb_en[idx];
               var de = current_data.nb_de[idx];
               var fr = current_data.nb_fr[idx];
               Morris.Bar({
-                 element: 'bar-example',
+                 element: 'bar-chart',
                  data: [
                     {y: 'EN', a: en},
                     {y: 'DE', a: de},
