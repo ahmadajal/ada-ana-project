@@ -7,6 +7,8 @@
     <script src="ch_map_files/bootstrap.min.js"></script>
     <script src="ch_map_files/moment.min.js"></script>
     <script src="ch_map_files/bootstrap-datepicker.js"></script>
+    <script src="ch_map_files/morris.min.js"></script>
+    <script src="ch_map_files/raphael-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.0/leaflet.markercluster-src.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.0/leaflet.markercluster.js"></script>
@@ -121,8 +123,22 @@
           </div> -->
         </div>
       </div>
+      <div class="col-sm-5">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Tweets Per Language
+          </div>
+          <div class="chart-stage">
+<div id="bar-example" style="height: 200px;"></div>
+          </div>
+<!--           <div class="chart-notes">
+            Notes about this chart
+          </div> -->
+        </div>
+      </div>
       
     </div>
+    
 
     <div class="row">
 <!--       <div class="col-sm-6 col-md-4">
@@ -207,9 +223,9 @@
     var UNDEFINED_VALUE = -2;
     var INTERVAL = HAPPY_VALUE - SAD_VALUE;
     var NEUTRAL_VALUE = SAD_VALUE + HAPPY_VALUE / 2.0;
-    var current_data = data_all[4][1];
+    var current_data = data_all[3][1];
     var START_DATE = new Date(2016, 0, 1);
-    var DEFAULT_DATE = new Date(2016, 3, 1);
+    var DEFAULT_DATE = new Date(2016, 2, 1);
     var END_DATE = new Date(2016, 10, 1);
     function addDays(date, days) {
         var result = new Date(date);
@@ -323,6 +339,20 @@
               content2 += '<i> Sentiment Mean </i>: ' + Math.round(current_data.main_mean[idx] * 100) / 100 + '<br />';
               content2 += '<i> Sentiment Var. </i>: ' + Math.round(current_data.main_std[idx] * 100) / 100 + '<br />';
               content2 += '<i> P-Value </i>: ' + Math.round(current_data.main_pv[idx] * 100) / 100 + '<br />';
+              var en = current_data.nb_en[idx];
+              var de = current_data.nb_de[idx];
+              var fr = current_data.nb_fr[idx];
+              Morris.Bar({
+                 element: 'bar-example',
+                 data: [
+                    {y: 'EN', a: en},
+                    {y: 'DE', a: de},
+                    {y: 'FR', a: fr}
+                 ],
+                 xkey: 'y',
+                 ykeys: ['a'],
+                 labels: ['Visitors', 'Conversions']
+              });
             }
         } else {
             content1 += 'Hover over a canton';
@@ -550,4 +580,8 @@ $(function () {
         init();
     });
 });
+//Morris charts snippet - js
+
+
+
 </script>
