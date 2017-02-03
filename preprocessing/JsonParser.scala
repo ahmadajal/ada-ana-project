@@ -8,7 +8,7 @@ import java.io.BufferedReader
 import java.io.FileWriter
 import java.io.BufferedWriter
 
-object Main {
+object JsonParser {
   def getDay(d: Int): String = if (d < 10) s"0$d" else d.toString
   def getMonth(m: Int): String = m match {
     case 1 => "january"
