@@ -4,6 +4,8 @@ import scipy.stats as stats
 import os 
 
 def day_preprocess(day,data_day):
+    # prepare the data of one single day for vizualisation
+    
     data_single_day = data_day.get_group(day)
     data_single_day_gp = data_single_day.groupby('canton')
     # p_values
@@ -44,6 +46,7 @@ def sentiment_value(name):
 
 
 def month_preprocess(month,month_nb,loc_to_canton):
+    # prepare the data of one month for vizualisation
     
     # reading files
     data_e = pd.DataFrame()
@@ -137,12 +140,13 @@ def month_preprocess(month,month_nb,loc_to_canton):
     data_sent_canton_ = pd.concat([data_sent_canton_mean, data_sent_canton_std, data_sent_canton_p_values, data_sent_canton_count, data_sent_canton_nb_lang], axis = 1, join = 'inner')
     data_sent_canton_ = data_sent_canton_.reset_index()
     
-    data_sent_canton_.to_json("/home/tounsi/viz-data/" + month + "/__harvest3r_twitter_data_" + month_nb + "_0.json")
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    data_sent_canton_.to_json(os.path.join(dir_path,"../viz-data/" + month + "/__harvest3r_twitter_data_" + month_nb + "_0.json"))
     
     print("Single day vizualisation \n")
 
     data_day = data_sent_canton.groupby(['day'])
-    prefix= "/home/tounsi/viz-data/" + month + "/__harvest3r_twitter_data_"
+    prefix= "../viz-data/" + month + "/__harvest3r_twitter_data_"
     postfix = "-" + month_nb + "_0.json"
     all_data_april = []
 
@@ -155,12 +159,11 @@ def month_preprocess(month,month_nb,loc_to_canton):
         
         if day in data_day.groups.keys():
             data_sd = day_preprocess(day,data_day)
-            data_sd.to_json(prefix + day.split('-')[2] + postfix)
+            data_sd.to_json(os.path.join(dir_path , (prefix + day.split('-')[2] + postfix)))
         
 def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    # reading locations
-    
+    # reading locations   
     print("Reading locations' mapping\n");
     loc_to_canton = pd.read_csv(os.path.join(dir_path,"../data/location_to_canton.csv"))
     del loc_to_canton['Unnamed: 0']
