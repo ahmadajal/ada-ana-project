@@ -8,7 +8,7 @@ It generates a file "data/location_to_canton.csv", containing the maximum of loc
 
 ## Statistical analysis and Pre-visualization
 
-The corresonding source code is "viz_data.py".
+The corresonding source code is "stats_previz.py".
 For each month, we have the following pipeline : 
 
 - Read the english, german and french scored tweets
@@ -21,6 +21,8 @@ For each month, we have the following pipeline :
     - writing the results in a json file 
     
 - statistical analysis of the aggregated data of each day, and writing the results in json files
+
+All the results are written in the directory : ../viz-data
 
 
 
