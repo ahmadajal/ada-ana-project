@@ -11,11 +11,15 @@ from nltk.stem.lancaster import LancasterStemmer
 from nltk.stem import WordNetLemmatizer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import opinion_lexicon
+import importlib
 
 # German
 import textblob_de
 from textblob_de import TextBlobDE as TextBlob
 from nltk.stem.snowball import GermanStemmer
+
+# French
+from senticnet.senticnet import Senticnet
 
 
 
@@ -23,7 +27,7 @@ def tokenize_german_tweet(df_de):
 	
 	main_tk = []
 	for tweet in df_de.main:
-		blob_tweet = TextBlob(tweet)
+		blob_tweet = TextBlob(tweet) #TextBlob is a specific German Tokenizer
 		blob_tweet.tokenizer = textblob_de.tokenizers.PatternTokenizer()
 		tk = blob_tweet.tokenizer.tokenize(tweet)
 		main_tk.append(tk)
@@ -32,7 +36,7 @@ def tokenize_german_tweet(df_de):
 
 	return df_de
 
-def tokeniz_english_tweet(df_en):
+def tokenize_english_tweet(df_en):
 	#tokenize the tweets
 	tknzr = TweetTokenizer(preserve_case=False, reduce_len=True, strip_handles=True)
 	main_tk = []
@@ -53,7 +57,6 @@ def clean_german_text(df_de):
 	punctuations = list(string.punctuation)
 	stops.update(punctuations)
 
-	#stemmer = GermanStemmer()
 	meaningful_main = []
 	for tweet in df_de.main_tk:
 		meaningful_tweet = [w.lower() for w in tweet if not w.lower() in stops]
@@ -65,9 +68,26 @@ def clean_german_text(df_de):
 
 	return df_de
 
+def clean_french_text(df_fr):
+  df_fr = tokenize_english_tweet(df_fr)
+  #add stop words
+  stops = set(stopwords.words("french"))
+  punctuations = list(string.punctuation)
+  stops.update(punctuations)
+ 
+  meaningful_main = []
+  for tweet in df_fr.main_tk:
+      meaningful_tweet = [w.lower() for w in tweet if not w.lower() in stops]
+      #stemmer_tweet = [stemmer.stem(w) for w in meaningful_tweet]
+      meaningful_main.append(meaningful_tweet)
+
+  df_fr['meaningful_main'] = meaningful_main
+  df_fr = df_fr.drop('main_tk', axis = 1)
+  return df_fr
+
 def  clean_english_text(df_en):
 	
-	df_en = tokeniz_english_tweet(df_en)
+	df_en = tokenize_english_tweet(df_en)
 	
 	#add stop words
 	stops = set(stopwords.words("english"))
@@ -205,6 +225,40 @@ def set_german_sentiment_scores(df_de):
 
 	return df_de
 
+def french_score(tokens):
+  
+  sn = Senticnet('fr')
+  data_module = importlib.import_module("senticnet.babel.data_fr")
+  data = data_module.senticnet
+  
+  pos_emoticons, neg_emoticons = list_of_emoticons()
+  pos_scores = [3.0000]*len(pos_emoticons)
+  neg_scores = [-3.0000]*len(neg_emoticons)
+  words = pos_emoticons + neg_emoticons
+  scores = pos_scores + neg_scores
+  lex_dic = dict(zip(words, scores))
+  
+  polarity_score = (sum(sn.polarity_value(w) for w in tokens if w in data))
+  polarity_score = ( polarity_score + sum(lex_dic[w] for w in tokens if w in lex_dic))/(len(tokens)+0.0001)
+  polarity_score = 1 if polarity_score >= 1 else (-1 if polarity_score <= -1 else polarity_score)
+
+  return polarity_score
+
+def set_french_sentiment_scores(df_fr):
+
+  start_time = time.time()
+  df_fr = clean_french_text(df_fr)
+  polarity = []
+  for tweet in df_fr.meaningful_main:
+    score = french_score(tweet)
+    polarity.append(score)
+  
+  df_fr['clean_main_polarity'] = polarity
+
+  df_fr = df_fr.drop('meaningful_main', axis = 1)
+  print("--- clean main German polarity: %s seconds ---" % (time.time() - start_time)) 
+  
+  return df_fr
 
 def set_english_sentiment_scores(df_en):
 	
@@ -257,14 +311,23 @@ def read_data(data_path):
 
 def main():
 
-	df, df_en, df_de, df_fr = read_data('../data/input_tweets/')
+	d_path = input("Please enter the full path of the data:\n")
+  df, df_en, df_de, df_fr = read_data(d_path)
 	
 	df_en = set_english_sentiment_scores(df_en)
 	df_en.to_csv('../data/output_tweets/sentiment_scored_english_tweets.csv')
-	df_de = set_german_sentiment_scores(df_de)
-	df_de.to_csv('../data/output_tweets/sentiment_scored_german_tweets.csv')
-	#df_fr.to_csv('../data/output_tweets/french_tweets.csv')
 
+  
+  for m in os.listdir(d_path):
+    df, df_en, df_de, df_fr = read_data((d_path + m + "/"))
+    print('Begin month: '+ m + ' ......................................')
+    df_en = set_english_sentiment_scores(df_en)
+    df_de = set_german_sentiment_scores(df_de)
+    df_fr = set_french_sentiment_scores(df_fr)
+    
+    df_en.to_csv((d_path + '/' + m + '/sentiment_scored_english_tweets.csv'))
+    df_de.to_csv((d_path + '/' + m + '/sentiment_scored_german_tweets.csv'))
+    df_fr.to_csv((d_path + '/' + m + '/sentiment_scored_fench_tweets.csv'))
 
 
 
